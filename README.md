@@ -344,3 +344,189 @@ Repetitive Zeros in Output:
 The UART transmitter is configured to operate at 9600 baud. If you need a different baud rate, modify the Verilog code and update the serial terminal settings accordingly.
 ![t3_4](https://github.com/user-attachments/assets/0afea96f-87ec-4788-b0c9-f1f4af0feb9b)
 
+---
+
+# Task 4: VSDFSQUADRON UART Transmitter with Sensor Inputs (uart_tx_sense)
+
+## Overview
+
+This project implements a UART transmitter on the VSDFSQUADRON FPGA board to send real-time sensor data to an external device via a serial interface. The "uart_tx_sense" project integrates a sensor (e.g., temperature or light sensor) with the FPGA, processes the sensor data, and transmits it over UART at 9600 baud. This README provides instructions for setting up, implementing, testing, and documenting the system, based on standard FPGA practices and insights from related tasks in the VSDSquadron_FM repository.
+
+## Prerequisites
+
+
+
+
+
+### Hardware:
+
+
+
+
+
+- VSDFSQUADRON FPGA board (likely iCE40 UP5K-based)
+
+
+
+- Sensor (e.g., TMP36 for temperature, LDR for light, or DHT11 for digital data)
+
+
+
+- USB-to-serial adapter (e.g., FTDI or CP2102)
+
+
+
+- Host computer (Linux or Windows)
+
+
+
+### Software:
+
+
+
+
+
+- FPGA development tools (e.g., Lattice iCEcube2 or Yosys for open-source synthesis)
+
+
+
+- make and a compatible toolchain (e.g., icestorm for iCE40 FPGAs)
+
+
+
+- Serial terminal software (e.g., PuTTY, picocom, or Tera Term)
+
+
+
+- USB-to-serial drivers for your operating system
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+- Clone the VSDSquadron_FM repository to your local machine:
+```bash
+git clone https://github.com/VSDSquadron/VSDSquadron_FM.git
+cd VSDSquadron_FM/uart_tx_sense
+```
+
+### 2. Study the Verilog Code
+
+- Locate the main Verilog file (e.g., uart_tx_sense.v) in the project directory.
+
+
+
+- Review the code to understand:
+- Sensor Interface: How sensor data is acquired (e.g., via ADC for analog sensors or GPIO for digital sensors).
+- UART Transmitter: How data is serialized and transmitted (likely similar to VSDFSQUADRON_FM_uart_tx.v from Task 3).
+
+
+
+Example code structure (hypothetical):
+```bash
+module uart_tx_sense (
+    input clk,              // System clock
+    input [7:0] sensor_data, // Sensor data input
+    output tx               // UART TX pin
+);
+    // UART transmitter logic
+endmodule
+```
+### 3. Design Documentation
+#### Block Diagram:
+
+
+
+
+
+- Components: Sensor, FPGA (with UART transmitter), USB-to-serial adapter, host computer.
+
+
+
+- Flow: Sensor data → FPGA processing → UART transmission → Serial terminal display.
+
+
+
+#### Circuit Diagram:
+
+
+
+
+
+- Connect the sensor to FPGA pins (e.g., ADC for analog, GPIO for digital).
+
+
+
+- Connect FPGA UART TX pin to the serial adapter’s RX pin.
+
+
+
+- Connect the serial adapter to the host computer via USB.
+
+### 4. Hardware Setup
+Serial Connection:
+
+
+
+
+
+- Connect the FPGA’s UART TX pin to the RX pin of the USB-to-serial adapter.
+
+
+
+- Plug the adapter into the host computer.
+
+
+
+- Identify the serial port:
+
+
+
+
+```bash
+Linux: ls /dev/tty* (e.g., /dev/ttyUSB0)
+```
+
+
+Windows: Check Device Manager (e.g., COM3)
+
+5. Build and Flash the FPGA
+
+
+
+
+
+- Build the project using the provided Makefile:
+```bash
+make build
+```
+This synthesizes the Verilog code, performs place-and-route, and generates a bitstream.
+
+
+
+- Flash the bitstream to the FPGA:
+```bash
+sudo make flash
+```
+![t43](https://github.com/user-attachments/assets/863c2f79-bb05-4668-83ea-51168708da02)
+
+This uses tools like iceprog to program the FPGA via the serial adapter.
+
+6. Test the System
+
+Linux:
+```bash
+picocom -b 9600 /dev/ttyUSB0
+
+Exit with Ctrl+A, Ctrl+X.
+```
+![t44](https://github.com/user-attachments/assets/7e1cfe8d-9582-47f6-ba41-24d6fe7dec51)
+
+
+Windows:
+
+Open PuTTY, configure for Serial, COM3, 9600 baud, and click "Open."
+
+![t42](https://github.com/user-attachments/assets/bf8ea249-f303-42c0-8704-42463e1c24ce)
+![t41](https://github.com/user-attachments/assets/d96d0ffd-c03a-41ff-bcf0-3b3ac1ff7ea3)
+
