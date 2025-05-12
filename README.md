@@ -530,3 +530,74 @@ Open PuTTY, configure for Serial, COM3, 9600 baud, and click "Open."
 ![t42](https://github.com/user-attachments/assets/bf8ea249-f303-42c0-8704-42463e1c24ce)
 ![t41](https://github.com/user-attachments/assets/d96d0ffd-c03a-41ff-bcf0-3b3ac1ff7ea3)
 
+
+-------------------------------------------------------------------------------------------------------------------
+
+# Task 5 : UART-Controlled RGB LED Display on VSDSquadron FPGA Mini
+
+This project implements a simple UART-controlled RGB LED system on the [VSDSquadron FPGA Mini](https://www.vlsisystemdesign.com/vsdsquadron/). ASCII characters are sent from a PC over UART to the FPGA, which lights up the onboard RGB LED in real time based on the received character.
+
+---
+
+## 🚀 Project Overview
+
+- **Input**: UART (9600 baud) over USB
+- **Output**: Onboard RGB LED display
+- **Platform**: Lattice iCE40UP5K (on VSDSquadron FM board)
+- **Language**: Verilog
+- **Tools**: Yosys, nextpnr, IceStorm, iceprog
+
+---
+
+## 🎯 Features
+
+- UART RX module to receive serial input (8N1 @ 9600 baud)
+- RGB controller to convert ASCII characters into color patterns
+- Mapping of characters:
+  | Character | RGB Color   |
+  |-----------|-------------|
+  | A         | 🔴 Red      |
+  | B         | 🟢 Green    |
+  | C         | 🔵 Blue     |
+  | D         | 🟡 Yellow   |
+  | E         | 🔵🟢 Cyan    |
+  | F         | 🔴🔵 Magenta |
+  | Others    | ⚫ Off       |
+
+---
+
+## 🧰 Directory Structure
+
+```bash
+.
+├── baud_gen.v           # Baud rate generator
+├── uart_rx.v            # UART receiver (8N1)
+├── rgb_controller.v     # Converts ASCII to RGB signals
+├── top.v                # Top-level module
+├── constraints.pcf      # Pin mapping for FPGA
+├── Makefile             # Build & flash automation
+
+```
+
+## Building and Flashing
+
+```bash
+cd ~/VSDSquadron_FM/uart_rgb_led
+make clean
+make
+sudo make flash
+```
+
+
+##  Testing
+
+### Windows Host:
+- Open PuTTY or Tera Term
+
+- Choose correct COM port (check in Device Manager)
+
+- Set baud rate to 9600, 8 data bits, no parity, 1 stop bit
+
+- Type a character (e.g., A, B, C...)
+
+- Observe the onboard RGB LED light up accordingly
