@@ -1,0 +1,7 @@
+set_io clk 20
+set_io reset 36
+
+# LEDs
+set_io led[0] 40   # Green
+set_io led[1] 39   # Red
+set_io led[2] 41   # Blue
