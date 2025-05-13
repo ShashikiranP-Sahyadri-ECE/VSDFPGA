@@ -601,3 +601,74 @@ sudo make flash
 - Type a character (e.g., A, B, C...)
 
 - Observe the onboard RGB LED light up accordingly
+
+-------------------------------------------------------------------
+# 💡 VSDSquadron FPGA Mini – 3-LED Blinking Counter
+
+This project demonstrates how to use the VSDSquadron FPGA Mini to blink LEDs at different rates using a Verilog-based counter.
+
+## 📌 Features
+
+- 24-bit binary counter driven by onboard clock
+- Green, Red, and Blue LEDs blink at different frequencies
+- Synthesized and flashed using open-source tools: Yosys, NextPNR, Iceprog
+
+## ⚙️ Hardware Setup
+
+- **Board:** VSDSquadron FPGA Mini (iCE40UP5K)
+- **Clock:** 20 MHz (`hw_clk`)
+- **LEDs:**
+  - `led_green`: pin 40
+  - `led_red`: pin 39
+  - `led_blue`: pin 41
+- **UART (optional):**
+  - TX: pin 14
+  - RX: pin 15
+
+## 📐 Block Diagram
+
+![ChatGPT Image May 13, 2025, 10_06_38 PM](https://github.com/user-attachments/assets/b8e9b9bb-2ab4-4b02-80a9-1746699e54b4)
+
+
+## 🔩 File Descriptions
+
+| File | Description |
+|------|-------------|
+| `led_counter.v` | Verilog module implementing LED counter |
+| `vsdsquadron.pcf` | Pin constraint file |
+| `Makefile` | Automates build, place-and-route, and flashing |
+| `doc/block_diagram.png` | System architecture diagram |
+
+## 🧠 Verilog Module Overview
+
+```verilog
+module led_counter (
+    input wire clk,
+    input wire reset,
+    output reg led_red,
+    output reg led_green,
+    output reg led_blue
+);
+    reg [23:0] counter;
+
+    always @(posedge clk or posedge reset)
+        if (reset)
+            counter <= 0;
+        else
+            counter <= counter + 1;
+
+    always @(posedge clk) begin
+        led_green <= counter[23];
+        led_red   <= counter[22];
+        led_blue  <= counter[21];
+    end
+endmodule
+```
+
+## 🛠️ Build Instructions
+```bash
+make         # Builds the bitstream
+make prog    # Flashes to VSDSquadron FPGA Mini
+make clean   # Removes build artifacts
+```
+
