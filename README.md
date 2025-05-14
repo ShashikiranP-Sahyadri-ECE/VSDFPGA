@@ -535,7 +535,7 @@ Open PuTTY, configure for Serial, COM3, 9600 baud, and click "Open."
 
 # Task 5 : UART-Controlled RGB LED Display on VSDSquadron FPGA Mini
 
-This project implements a simple UART-controlled RGB LED system on the [VSDSquadron FPGA Mini](https://www.vlsisystemdesign.com/vsdsquadron/). ASCII characters are sent from a PC over UART to the FPGA, which lights up the onboard RGB LED in real time based on the received character.
+This project implements a simple UART-controlled RGB LED system on the VSDSquadron FPGA Mini. ASCII characters are sent from a PC over UART to the FPGA, which lights up the onboard RGB LED in real time based on the received character.
 
 ---
 
@@ -559,10 +559,6 @@ This project implements a simple UART-controlled RGB LED system on the [VSDSquad
   | A         | 🔴 Red      |
   | B         | 🟢 Green    |
   | C         | 🔵 Blue     |
-  | D         | 🟡 Yellow   |
-  | E         | 🔵🟢 Cyan    |
-  | F         | 🔴🔵 Magenta |
-  | Others    | ⚫ Off       |
 
 ---
 
@@ -603,72 +599,100 @@ sudo make flash
 - Observe the onboard RGB LED light up accordingly
 
 -------------------------------------------------------------------
-# 💡 VSDSquadron FPGA Mini – 3-LED Blinking Counter
+# Task 6 : Ultrasonic Distance Measurement with UART Interface on VSDSquadron FPGA
 
-This project demonstrates how to use the VSDSquadron FPGA Mini to blink LEDs at different rates using a Verilog-based counter.
+This project implements an ultrasonic distance measuring system with UART communication using Verilog HDL. The design targets the VSDSquadron FPGA Mini board and integrates ultrasonic sensing with serial data output for monitoring distance measurements in real-time.
+---
 
-## 📌 Features
+## 🧰 Directory Structure
 
-- 24-bit binary counter driven by onboard clock
-- Green, Red, and Blue LEDs blink at different frequencies
-- Synthesized and flashed using open-source tools: Yosys, NextPNR, Iceprog
-
-## ⚙️ Hardware Setup
-
-- **Board:** VSDSquadron FPGA Mini (iCE40UP5K)
-- **Clock:** 20 MHz (`hw_clk`)
-- **LEDs:**
-  - `led_green`: pin 40
-  - `led_red`: pin 39
-  - `led_blue`: pin 41
-- **UART (optional):**
-  - TX: pin 14
-  - RX: pin 15
-
-## 📐 Block Diagram
-
-![ChatGPT Image May 13, 2025, 10_06_38 PM](https://github.com/user-attachments/assets/b8e9b9bb-2ab4-4b02-80a9-1746699e54b4)
-
-
-## 🔩 File Descriptions
-
-| File | Description |
-|------|-------------|
-| `led_counter.v` | Verilog module implementing LED counter |
-| `vsdsquadron.pcf` | Pin constraint file |
-| `Makefile` | Automates build, place-and-route, and flashing |
-| `doc/block_diagram.png` | System architecture diagram |
-
-## 🧠 Verilog Module Overview
-
-```verilog
-module led_counter (
-    input wire clk,
-    input wire reset,
-    output reg led_red,
-    output reg led_green,
-    output reg led_blue
-);
-    reg [23:0] counter;
-
-    always @(posedge clk or posedge reset)
-        if (reset)
-            counter <= 0;
-        else
-            counter <= counter + 1;
-
-    always @(posedge clk) begin
-        led_green <= counter[23];
-        led_red   <= counter[22];
-        led_blue  <= counter[21];
-    end
-endmodule
-```
-
-## 🛠️ Build Instructions
 ```bash
-make         # Builds the bitstream
-make prog    # Flashes to VSDSquadron FPGA Mini
-make clean   # Removes build artifacts
+.
+├── Makefile              # Makefile for synthesis and programming
+├── top.v                 # Top-level module integrating all components
+├── uart.v                # UART transmitter module
+├── ultrasonic.v          # Ultrasonic sensor interface module
+├── VSDSquadronFM.pcf     # Physical constraint file for VSDSquadron FPGA
+
+```
+## Block Diagram
+```pgsql
+         +-----------------------------+
+         |                             |
+         |      Ultrasonic Module      |
+         |  (trigger & echo handling)  |
+         |                             |
+         +-------------+---------------+
+                       |
+                       | distance
+                       v
+         +-------------+---------------+
+         |                             |
+         |          UART Module        |
+         |    (Parallel to Serial)     |
+         |                             |
+         +-------------+---------------+
+                       |
+                       | TX
+                       v
+                 [ Serial Terminal ]
+
+```
+![Ultrasonic Distance Measurement System Diagram](https://github.com/user-attachments/assets/4d41f4d4-de03-40e0-beef-507d2f9fa4a8)
+
+## 📦 Module Descriptions
+### 1. ultrasonic.v
+Interfaces with an ultrasonic sensor (e.g., HC-SR04).
+
+Sends trigger pulse and captures echo to compute distance.
+
+Outputs the measured distance in a digital format.
+
+### 2. uart.v
+Implements UART transmission logic.
+
+Converts parallel data into serial data.
+
+Sends the distance measurement over UART to a serial terminal.
+
+### 3. top.v
+Connects the ultrasonic module with the UART transmitter.
+
+Converts measured distance to a suitable format for UART output.
+
+Manages system control and timing.
+
+### 4. VSDSquadronFM.pcf
+Specifies pin mapping between Verilog modules and VSDSquadron FPGA board I/Os.
+
+### 5. Makefile
+Automates synthesis, place and route, and bitstream generation.
+
+Includes commands for programming the FPGA board.
+
+## 🔧 Requirements
+FPGA Board: VSDSquadron Mini
+
+Toolchain: yosys, nextpnr, icepack
+
+Serial Monitor: PuTTY / minicom / Arduino Serial Monitor
+## Building and Flashing
+
+```bash
+make clean
+make
+sudo make flash
+make terminal
 ```
 
+
+##  Testing
+
+### Windows Host:
+- Open PuTTY or Tera Term
+
+- Choose correct COM port (check in Device Manager)
+
+- Set baud rate to 9600, 8 data bits, no parity, 1 stop bit
+
+- Observe the distance
