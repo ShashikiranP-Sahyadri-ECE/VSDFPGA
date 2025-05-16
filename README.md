@@ -531,168 +531,82 @@ Open PuTTY, configure for Serial, COM3, 9600 baud, and click "Open."
 ![t41](https://github.com/user-attachments/assets/d96d0ffd-c03a-41ff-bcf0-3b3ac1ff7ea3)
 
 
--------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
-# Task 5 : UART-Controlled RGB LED Display on VSDSquadron FPGA Mini
+# Task 5 & 6 : # 🧠 UART-Controlled RGB LED and Relay (FPGA Project)
 
-This project implements a simple UART-controlled RGB LED system on the VSDSquadron FPGA Mini. ASCII characters are sent from a PC over UART to the FPGA, which lights up the onboard RGB LED in real time based on the received character.
-
----
-
-## 🚀 Project Overview
-
-- **Input**: UART (9600 baud) over USB
-- **Output**: Onboard RGB LED display
-- **Platform**: Lattice iCE40UP5K (on VSDSquadron FM board)
-- **Language**: Verilog
-- **Tools**: Yosys, nextpnr, IceStorm, iceprog
+This project implements a UART-based control system on an FPGA that cycles RGB LEDs and toggles a relay using UART serial input. Designed for platforms like the **VSDSquadron FPGA Mini**, this project uses a finite state machine (FSM) to react to each UART character received.
 
 ---
 
-## 🎯 Features
+## 🚀 Features
 
-- UART RX module to receive serial input (8N1 @ 9600 baud)
-- RGB controller to convert ASCII characters into color patterns
-- Mapping of characters:
-  | Character | RGB Color   |
-  |-----------|-------------|
-  | A         | 🔴 Red      |
-  | B         | 🟢 Green    |
-  | C         | 🔵 Blue     |
+- UART Receiver in 8N1 format (9600 baud)
+- RGB LED color cycling: Red → Green → Blue
+- Relay control:
+  - ON in Red state
+  - OFF in Green and Blue states
+- Active-low relay logic supported
+- Verified with **Docklight terminal** for UART testing
 
 ---
 
-## 🧰 Directory Structure
-
-```bash
-.
-├── baud_gen.v           # Baud rate generator
-├── uart_rx.v            # UART receiver (8N1)
-├── rgb_controller.v     # Converts ASCII to RGB signals
-├── top.v                # Top-level module
-├── constraints.pcf      # Pin mapping for FPGA
-├── Makefile             # Build & flash automation
-
-```
-
-## Building and Flashing
-
-```bash
-cd ~/VSDSquadron_FM/uart_rgb_led
-make clean
-make
-sudo make flash
+## 📁 File Structure
+``` bash
+├── uart_rx.v # UART receiver module
+├── top.v # Top-level FSM with RGB & relay logic
+├── constraints.pcf # Pin configuration for synthesis
+└── Makefile # This documentation file
 ```
 
 
-##  Testing
+![_- visual selection](https://github.com/user-attachments/assets/2a96fa67-5231-4f37-8d52-b54d26c012e8)
 
-### Windows Host:
-- Open PuTTY or Tera Term
 
-- Choose correct COM port (check in Device Manager)
 
-- Set baud rate to 9600, 8 data bits, no parity, 1 stop bit
-
-- Type a character (e.g., A, B, C...)
-
-- Observe the onboard RGB LED light up accordingly
-
--------------------------------------------------------------------
-# Task 6 : Ultrasonic Distance Measurement with UART Interface on VSDSquadron FPGA
-
-This project implements an ultrasonic distance measuring system with UART communication using Verilog HDL. The design targets the VSDSquadron FPGA Mini board and integrates ultrasonic sensing with serial data output for monitoring distance measurements in real-time.
----
-
-## 🧰 Directory Structure
-
-```bash
-.
-├── Makefile              # Makefile for synthesis and programming
-├── top.v                 # Top-level module integrating all components
-├── uart.v                # UART transmitter module
-├── ultrasonic.v          # Ultrasonic sensor interface module
-├── VSDSquadronFM.pcf     # Physical constraint file for VSDSquadron FPGA
-
-```
-## Block Diagram
-```pgsql
-         +-----------------------------+
-         |                             |
-         |      Ultrasonic Module      |
-         |  (trigger & echo handling)  |
-         |                             |
-         +-------------+---------------+
-                       |
-                       | distance
-                       v
-         +-------------+---------------+
-         |                             |
-         |          UART Module        |
-         |    (Parallel to Serial)     |
-         |                             |
-         +-------------+---------------+
-                       |
-                       | TX
-                       v
-                 [ Serial Terminal ]
-
-```
-![Ultrasonic Distance Measurement System Diagram](https://github.com/user-attachments/assets/4d41f4d4-de03-40e0-beef-507d2f9fa4a8)
-
-## 📦 Module Descriptions
-### 1. ultrasonic.v
-Interfaces with an ultrasonic sensor (e.g., HC-SR04).
-
-Sends trigger pulse and captures echo to compute distance.
-
-Outputs the measured distance in a digital format.
-
-### 2. uart.v
-Implements UART transmission logic.
-
-Converts parallel data into serial data.
-
-Sends the distance measurement over UART to a serial terminal.
-
-### 3. top.v
-Connects the ultrasonic module with the UART transmitter.
-
-Converts measured distance to a suitable format for UART output.
-
-Manages system control and timing.
-
-### 4. VSDSquadronFM.pcf
-Specifies pin mapping between Verilog modules and VSDSquadron FPGA board I/Os.
-
-### 5. Makefile
-Automates synthesis, place and route, and bitstream generation.
-
-Includes commands for programming the FPGA board.
-
-## 🔧 Requirements
-FPGA Board: VSDSquadron Mini
-
-Toolchain: yosys, nextpnr, icepack
-
-Serial Monitor: PuTTY / minicom / Arduino Serial Monitor
 ## Building and Flashing
 
 ```bash
 make clean
 make
 sudo make flash
-make terminal
 ```
 
+## 🔧 UART Baud Settings
+Setting	Value
+- Baud Rate	9600
+- Data Bits	8
+- Parity	None
+- Stop Bits	1
+- Flow Control	None
 
-##  Testing
+✅ Tested using Docklight serial terminal.
 
-### Windows Host:
-- Open PuTTY or Tera Term
+## 🧠 FSM Logic (Top Module)
+Each UART byte received triggers a state transition:
+'''
+State |	LED Color	| Relay
+0	  |  Red	    | ON
+1	  |  Green	    | OFF
+2	  |  Blue	    | OFF
 
-- Choose correct COM port (check in Device Manager)
+Relay is controlled by relay1_reg and is active-low.
 
-- Set baud rate to 9600, 8 data bits, no parity, 1 stop bit
+LEDs are connected via a 3-bit RGB register.
 
-- Observe the distance
+## 💻 How to Use
+
+- Program your FPGA with the generated bitstream.
+
+- Connect Docklight/Serial Terminal to the board at 9600 8N1.
+
+- Send any character (e.g., 'a', '1', 'z').
+
+Observe:
+
+ -  RGB LED color changes in sequence.
+
+Relay turns ON only during the red phase.
+
+
+
