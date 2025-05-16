@@ -1,0 +1,8 @@
+set_io clk       20   
+set_io uartrx    15    
+
+set_io rgb[0]    18    
+set_io rgb[1]    19    
+set_io rgb[2]    2     
+
+set_io relay1  3       

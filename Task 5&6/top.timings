@@ -1,0 +1,92 @@
+
+icetime topological timing analysis report
+==========================================
+
+Report for critical path:
+-------------------------
+
+        lc40_21_2_6 (LogicCell40) [clk] -> lcout: 1.491 ns
+     1.491 ns net_79057 (uart_inst.clkcount[0])
+        t109 (LocalMux) I -> O: 1.099 ns
+        inmux_21_1_82810_82830 (InMux) I -> O: 0.662 ns
+        lc40_21_1_0 (LogicCell40) in1 -> carryout: 0.675 ns
+     3.928 ns t7
+        lc40_21_1_1 (LogicCell40) carryin -> carryout: 0.278 ns
+     4.206 ns net_82834 (uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3_SB_LUT4_I0_1_I3)
+        lc40_21_1_2 (LogicCell40) carryin -> carryout: 0.278 ns
+     4.484 ns net_82840 ($nextpnr_ICESTORM_LC_2$I3)
+        inmux_21_1_82840_82850 (InMux) I -> O: 0.662 ns
+        lc40_21_1_3 (LogicCell40) in3 -> lcout: 0.874 ns
+     6.020 ns net_78926 (uart_inst.clkcount_SB_DFFESS_Q_D_SB_LUT4_O_1_I3)
+        t98 (LocalMux) I -> O: 1.099 ns
+        inmux_21_2_82962_82993 (InMux) I -> O: 0.662 ns
+        lc40_21_2_0 (LogicCell40) in1 -> carryout: 0.675 ns
+     8.457 ns t10
+        lc40_21_2_1 (LogicCell40) carryin -> carryout: 0.278 ns
+     8.735 ns net_82997 ($nextpnr_ICESTORM_LC_4$I3)
+        inmux_21_2_82997_83007 (InMux) I -> O: 0.662 ns
+        lc40_21_2_2 (LogicCell40) in3 -> lcout: 0.874 ns
+    10.272 ns net_79053 (uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_1_I3)
+        t105 (LocalMux) I -> O: 1.099 ns
+        inmux_22_1_86645_86662 (InMux) I -> O: 0.662 ns
+        t25 (CascadeMux) I -> O: 0.000 ns
+        lc40_22_1_0 (LogicCell40) in2 -> carryout: 0.609 ns
+    12.643 ns t13
+        lc40_22_1_1 (LogicCell40) carryin -> carryout: 0.278 ns
+    12.921 ns net_86665 (uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3_SB_LUT4_I0_2_I3)
+        lc40_22_1_2 (LogicCell40) carryin -> carryout: 0.278 ns
+    13.199 ns net_86671 (uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_2_I3)
+        lc40_22_1_3 (LogicCell40) carryin -> carryout: 0.278 ns
+    13.477 ns net_86677 ($nextpnr_ICESTORM_LC_6$I3)
+        inmux_22_1_86677_86687 (InMux) I -> O: 0.662 ns
+        lc40_22_1_4 (LogicCell40) in3 -> lcout: 0.874 ns
+    15.013 ns net_82758 (uart_inst.clkcount_SB_DFFESS_Q_D_SB_LUT4_O_2_I3)
+        t118 (LocalMux) I -> O: 1.099 ns
+        inmux_22_2_86802_86824 (InMux) I -> O: 0.662 ns
+        lc40_22_2_0 (LogicCell40) in1 -> carryout: 0.675 ns
+    17.450 ns t18
+        lc40_22_2_1 (LogicCell40) carryin -> carryout: 0.278 ns
+    17.728 ns net_86828 (uart_inst.clkcount_SB_DFFESS_Q_D_SB_LUT4_O_3_I3)
+        lc40_22_2_2 (LogicCell40) carryin -> carryout: 0.278 ns
+    18.007 ns net_86834 ($nextpnr_ICESTORM_LC_8$I3)
+        inmux_22_2_86834_86844 (InMux) I -> O: 0.662 ns
+        lc40_22_2_3 (LogicCell40) in3 -> lcout: 0.874 ns
+    19.543 ns net_82885 (uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3_SB_LUT4_I0_3_I3)
+        t130 (LocalMux) I -> O: 1.099 ns
+        inmux_23_2_90632_90656 (InMux) I -> O: 0.662 ns
+        t42 (CascadeMux) I -> O: 0.000 ns
+        lc40_23_2_0 (LogicCell40) in2 -> carryout: 0.609 ns
+    21.914 ns t32
+        lc40_23_2_1 (LogicCell40) carryin -> carryout: 0.278 ns
+    22.192 ns net_90659 (uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_I3)
+        lc40_23_2_2 (LogicCell40) carryin -> carryout: 0.278 ns
+    22.470 ns net_90665 (uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3[3])
+        lc40_23_2_3 (LogicCell40) carryin -> carryout: 0.278 ns
+    22.748 ns net_90671 (uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_3_I3)
+        inmux_23_2_90671_90681 (InMux) I -> O: 0.662 ns
+    23.410 ns net_90681 (uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_3_I3)
+        lc40_23_2_4 (LogicCell40) in3 [setup]: 0.583 ns
+    23.993 ns net_86717 (uart_inst.busy_SB_LUT4_I0_I1_SB_LUT4_O_I3[0])
+
+Resolvable net names on path:
+     1.491 ns ..  3.252 ns uart_inst.clkcount[0]
+     4.206 ns ..  4.206 ns uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3_SB_LUT4_I0_1_I3
+     4.484 ns ..  5.146 ns $nextpnr_ICESTORM_LC_2$I3
+     6.020 ns ..  7.782 ns uart_inst.clkcount_SB_DFFESS_Q_D_SB_LUT4_O_1_I3
+     8.735 ns ..  9.398 ns $nextpnr_ICESTORM_LC_4$I3
+    10.272 ns .. 12.033 ns uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_1_I3
+    12.921 ns .. 12.921 ns uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3_SB_LUT4_I0_2_I3
+    13.199 ns .. 13.199 ns uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_2_I3
+    13.477 ns .. 14.139 ns $nextpnr_ICESTORM_LC_6$I3
+    15.013 ns .. 16.775 ns uart_inst.clkcount_SB_DFFESS_Q_D_SB_LUT4_O_2_I3
+    17.728 ns .. 17.728 ns uart_inst.clkcount_SB_DFFESS_Q_D_SB_LUT4_O_3_I3
+    18.007 ns .. 18.669 ns $nextpnr_ICESTORM_LC_8$I3
+    19.543 ns .. 21.305 ns uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3_SB_LUT4_I0_3_I3
+    22.192 ns .. 22.192 ns uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_I3
+    22.470 ns .. 22.470 ns uart_inst.busy_SB_DFF_Q_D_SB_LUT4_O_I3[3]
+    22.748 ns .. 23.410 ns uart_inst.clkcount_SB_DFFESS_Q_4_D_SB_LUT4_O_3_I3
+                  lcout -> uart_inst.busy_SB_LUT4_I0_I1_SB_LUT4_O_I3[0]
+
+Total number of logic levels: 21
+Total path delay: 23.99 ns (41.68 MHz)
+
