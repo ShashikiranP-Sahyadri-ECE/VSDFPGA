@@ -584,11 +584,12 @@ Setting	Value
 
 ## 🧠 FSM Logic (Top Module)
 Each UART byte received triggers a state transition:
-'''
-State |	LED Color	| Relay
-0	  |  Red	    | ON
-1	  |  Green	    | OFF
-2	  |  Blue	    | OFF
+
+State     | RGB Color | Relay
+----------|-----------|-------
+00 (Init) | RED       | ON
+01        | GREEN     | OFF
+10        | BLUE      | OFF
 
 Relay is controlled by relay1_reg and is active-low.
 
